@@ -23,11 +23,4 @@ public class OrderItem {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    public OrderItem(String productId, String productName, int quantity, double unitPrice, double subtotal){
-        this.productId = productId;
-        this.productName = productName;
-        this.quantity = quantity;
-        this.unitPrice = unitPrice;
-        this.subtotal = quantity * unitPrice;
-    }
 }

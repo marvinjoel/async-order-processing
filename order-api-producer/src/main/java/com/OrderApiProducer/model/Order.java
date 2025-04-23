@@ -31,9 +31,4 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items;
 
-    public Order(){
-        this.orderId = UUID.randomUUID().toString();
-        this.orderDate = LocalDateTime.now();
-        this.orderStatus = "PENDING";
-    }
 }
