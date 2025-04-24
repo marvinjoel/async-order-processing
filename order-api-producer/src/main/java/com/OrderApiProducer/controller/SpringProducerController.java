@@ -8,15 +8,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/orders")
+@RequestMapping("/api")
 public class SpringProducerController {
 
     private final RabbitMQJsonProducer jsonProducer;
 
-    @PostMapping
+    @PostMapping("/orders")
     public ResponseEntity<?> createOrder(@RequestBody OrderRequest order){
         jsonProducer.sendJsonMessage(order);
         return ResponseEntity.ok("Json message sent to RabbitMQ json ....");
