@@ -1,0 +1,47 @@
+services:
+
+  order-api-producer:
+    build: ./order-api-producer/
+    ports:
+      - "9000:9000"
+    env_file:
+      - .env
+    networks:
+      - rabbitmq_network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  order-processor-consumer:
+    build: ./order-processor-consumer/
+    ports:
+      - "9001:9001"
+    env_file:
+      - .env
+    networks:
+      - rabbitmq_network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  rabbitmq:
+    image: rabbitmq:4.1.0-management-alpine
+    container_name: spring_rabbitmq
+    ports:
+      - "5672:5672" # Puerto para RabbitMQ
+      - "15672:15672" # Puerto para RabbitMQ Management
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PWD}
+    restart: always
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "check_port_connectivity" ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    networks:
+      - rabbitmq_network
+
+networks:
+  rabbitmq_network:
+    driver: bridge

@@ -2,6 +2,7 @@ package com.OrderApiProducer.controller;
 
 import com.OrderApiProducer.dto.OrderRequest;
 import com.OrderApiProducer.serviceRabbit.RabbitMQJsonProducer;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Tag(name = "Orders Producer", description = "API para crear y enviar órdenes a través de RabbitMQ")
 public class SpringProducerController {
 
     private final RabbitMQJsonProducer jsonProducer;
