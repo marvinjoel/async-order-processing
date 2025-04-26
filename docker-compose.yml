@@ -3,18 +3,26 @@ services:
   order-api-producer:
     build: ./order-api-producer/
     ports:
-      - "8000:8000"
-    environment:
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-
+      - "9000:9000"
+    env_file:
+      - .env
     networks:
       - rabbitmq_network
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
 
-
+  order-processor-consumer:
+    build: ./order-processor-consumer/
+    ports:
+      - "9001:9001"
+    env_file:
+      - .env
+    networks:
+      - rabbitmq_network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
 
   rabbitmq:
     image: rabbitmq:4.1.0-management-alpine
